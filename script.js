@@ -15,6 +15,11 @@ const navPanel = document.querySelector('.nav-panel');
 const navLinks = [...document.querySelectorAll('.nav-link')];
 const backToTop = document.querySelector('.back-to-top');
 
+backToTop?.addEventListener('click', (event) => {
+  event.preventDefault();
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
+});
+
 function toggleMenu(forceOpen) {
   const open = typeof forceOpen === 'boolean' ? forceOpen : !navPanel.classList.contains('open');
   navPanel.classList.toggle('open', open);
