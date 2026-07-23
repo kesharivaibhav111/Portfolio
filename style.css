@@ -594,6 +594,13 @@ body.cursor-ready .cursor-glow {
   }
 }
 
+@keyframes mobile-art-in {
+  to {
+    opacity: var(--mobile-art-opacity, .48);
+    transform: none;
+  }
+}
+
 .hero-art {
   position: relative;
   z-index: 1;
@@ -2402,19 +2409,9 @@ body.cursor-ready .cursor-glow {
     z-index: 2;
   }
 
-  /* `backdrop-filter` makes the fixed menu relative to the scrolled header.
-     Remove it while the menu is open so overlay always covers full viewport. */
-  body.menu-open .site-header.scrolled {
-    background: transparent;
-    border-color: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
   .nav-panel {
     position: fixed;
-    z-index: 1;
+    z-index: 99;
     inset: 0;
     display: flex;
     flex-direction: column;
@@ -2496,6 +2493,11 @@ body.cursor-ready .cursor-glow {
     width: 670px;
     height: 520px;
     opacity: .48;
+    --mobile-art-opacity: .48;
+  }
+
+  .hero-art.hero-enter {
+    animation-name: mobile-art-in;
   }
 
   .hero-name {
@@ -2604,10 +2606,12 @@ body.cursor-ready .cursor-glow {
   }
 
   .hero-art {
-    right: -112%;
-    width: 540px;
-    height: 480px;
-    opacity: .25;
+    top: 37%;
+    right: -26%;
+    width: 460px;
+    height: 460px;
+    opacity: .46;
+    --mobile-art-opacity: .46;
   }
 
   .hero-art .art-caption {

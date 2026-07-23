@@ -10,6 +10,7 @@ window.addEventListener('load', closeLoader, { once: true });
 window.setTimeout(closeLoader, 2400);
 
 const header = document.querySelector('.site-header');
+const navbar = document.querySelector('.navbar');
 const menuToggle = document.querySelector('.menu-toggle');
 const navPanel = document.querySelector('.nav-panel');
 const navLinks = [...document.querySelectorAll('.nav-link')];
@@ -26,6 +27,25 @@ function toggleMenu(forceOpen) {
   menuToggle.setAttribute('aria-expanded', String(open));
   menuToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
   document.body.classList.toggle('menu-open', open);
+}
+
+// A filtered fixed header becomes a containing block on some mobile browsers.
+// Portal menu to body below 720px so it always covers viewport after scrolling.
+function syncMobileMenuLayer() {
+  if (!navPanel || !navbar) return;
+  if (isCompact.matches) {
+    if (navPanel.parentElement !== document.body) document.body.append(navPanel);
+    return;
+  }
+  if (navPanel.parentElement !== navbar) navbar.append(navPanel);
+  toggleMenu(false);
+}
+
+syncMobileMenuLayer();
+if (typeof isCompact.addEventListener === 'function') {
+  isCompact.addEventListener('change', syncMobileMenuLayer);
+} else {
+  isCompact.addListener(syncMobileMenuLayer);
 }
 
 menuToggle?.addEventListener('click', () => toggleMenu());
