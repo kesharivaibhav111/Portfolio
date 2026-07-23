@@ -2402,6 +2402,16 @@ body.cursor-ready .cursor-glow {
     z-index: 2;
   }
 
+  /* `backdrop-filter` makes the fixed menu relative to the scrolled header.
+     Remove it while the menu is open so overlay always covers full viewport. */
+  body.menu-open .site-header.scrolled {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .nav-panel {
     position: fixed;
     z-index: 1;
