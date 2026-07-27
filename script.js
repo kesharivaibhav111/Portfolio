@@ -199,12 +199,12 @@ async function initializeThreeScene() {
 
   const core = new THREE.Mesh(
     new THREE.IcosahedronGeometry(1.5, 2),
-    new THREE.MeshBasicMaterial({ color: 0x65d7ff, wireframe: true, transparent: true, opacity: .45 })
+    new THREE.MeshBasicMaterial({ color: 0xa51623, wireframe: true, transparent: true, opacity: .45 })
   );
   network.add(core);
   const inner = new THREE.Mesh(
     new THREE.IcosahedronGeometry(1.09, 1),
-    new THREE.MeshBasicMaterial({ color: 0x3476dd, wireframe: true, transparent: true, opacity: .22 })
+    new THREE.MeshBasicMaterial({ color: 0x6f0d16, wireframe: true, transparent: true, opacity: .22 })
   );
   network.add(inner);
 
@@ -227,7 +227,7 @@ async function initializeThreeScene() {
   }
   const nodeGeometry = new THREE.BufferGeometry();
   nodeGeometry.setAttribute('position', new THREE.BufferAttribute(pointPositions, 3));
-  const nodes = new THREE.Points(nodeGeometry, new THREE.PointsMaterial({ color: 0xa9e9ff, size: .048, transparent: true, opacity: .88, sizeAttenuation: true }));
+  const nodes = new THREE.Points(nodeGeometry, new THREE.PointsMaterial({ color: 0xfff0d9, size: .048, transparent: true, opacity: .88, sizeAttenuation: true }));
   network.add(nodes);
 
   const connectionVertices = [];
@@ -240,12 +240,12 @@ async function initializeThreeScene() {
   });
   const lineGeometry = new THREE.BufferGeometry();
   lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(connectionVertices, 3));
-  const lines = new THREE.LineSegments(lineGeometry, new THREE.LineBasicMaterial({ color: 0x54bff4, transparent: true, opacity: .25 }));
+  const lines = new THREE.LineSegments(lineGeometry, new THREE.LineBasicMaterial({ color: 0xb31625, transparent: true, opacity: .25 }));
   network.add(lines);
 
   const rings = new THREE.Group();
   [2.15, 2.64].forEach((radius, index) => {
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(radius, .009, 5, 100), new THREE.MeshBasicMaterial({ color: index ? 0x2c67c5 : 0x75dcff, transparent: true, opacity: index ? .18 : .32 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(radius, .009, 5, 100), new THREE.MeshBasicMaterial({ color: index ? 0x680914 : 0xc21b29, transparent: true, opacity: index ? .18 : .32 }));
     ring.rotation.set(index ? 1.1 : .46, index ? -.4 : .2, index ? .7 : 0);
     rings.add(ring);
   });
@@ -260,7 +260,7 @@ async function initializeThreeScene() {
     starPositions[index + 2] = (Math.random() - .5) * 5 - 1;
   }
   starsGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-  const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ color: 0x77cfff, size: .018, transparent: true, opacity: .48 }));
+  const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ color: 0xd8585f, size: .018, transparent: true, opacity: .48 }));
   scene.add(stars);
 
   const targetPointer = new THREE.Vector2(0, 0);
