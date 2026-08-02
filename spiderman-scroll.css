@@ -1,0 +1,100 @@
+/* Decorative desktop scroll companion. Kept isolated from portfolio layout. */
+.spiderman-scroll {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .spiderman-scroll {
+    --spider-y: 118px;
+    --spider-tilt: 0deg;
+    --spider-web-scale: .12;
+    position: fixed;
+    z-index: 90;
+    display: block;
+    top: 0;
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    width: 52px;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none;
+    contain: layout paint style;
+  }
+
+  .spiderman-web {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100vh;
+    transform: translateX(-50%) scaleY(var(--spider-web-scale));
+    transform-origin: top center;
+    background: rgba(255, 255, 255, .96);
+    box-shadow: -1px 0 rgba(81, 5, 12, .22), 1px 0 rgba(81, 5, 12, .22), 0 0 7px rgba(255, 255, 255, .78);
+    will-change: transform;
+  }
+
+  .spiderman-rig {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 42px;
+    height: 56px;
+    transform: translate3d(-50%, var(--spider-y), 0) rotate(var(--spider-tilt));
+    transform-origin: 50% 4px;
+    will-change: transform;
+  }
+
+  .spiderman-swing {
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 4px;
+    animation: spiderman-swing 2.8s ease-in-out infinite;
+  }
+
+  .spiderman-figure {
+    display: block;
+    width: 42px;
+    height: 56px;
+    overflow: visible;
+  }
+
+  .spider-limb,
+  .spider-torso,
+  .spider-head,
+  .spider-hand {
+    fill: url(#spider-suit-red);
+    stroke: #150103;
+    stroke-linejoin: round;
+    stroke-width: 1.45;
+  }
+
+  .spider-web-mark {
+    fill: none;
+    stroke: #160204;
+    stroke-linecap: round;
+    stroke-width: .85;
+  }
+
+  .spider-eye {
+    fill: #fffdf8;
+    stroke: #160204;
+    stroke-linejoin: round;
+    stroke-width: .9;
+  }
+
+  .spider-arm-up {
+    stroke-width: 1.65;
+  }
+}
+
+@keyframes spiderman-swing {
+  0%,
+  100% { transform: rotate(-1.4deg) translateX(-.5px); }
+  50% { transform: rotate(1.4deg) translateX(.5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spiderman-swing {
+    animation: none;
+  }
+}
