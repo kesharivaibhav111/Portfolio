@@ -2,84 +2,140 @@
   const companion = document.querySelector('.spiderman-scroll');
   if (!companion) return;
 
-  const desktopQuery = window.matchMedia('(min-width: 1024px)');
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let currentY = 118;
-  let targetY = 118;
-  let currentTilt = 0;
-  let targetTilt = 0;
-  let previousScrollY = window.scrollY;
-  let frameId = 0;
-  let enabled = false;
-
-  const setMotion = () => {
-    companion.style.setProperty('--spider-y', `${currentY.toFixed(2)}px`);
-    companion.style.setProperty('--spider-tilt', `${currentTilt.toFixed(2)}deg`);
-    companion.style.setProperty('--spider-web-scale', Math.max(.01, (currentY + 5) / window.innerHeight).toFixed(4));
+  const state = {
+    currentY: 76,
+    targetY: 76,
+    currentTilt: 0,
+    targetTilt: 0,
+    currentSway: 0,
+    targetSway: 0,
+    currentSwing: 0,
+    targetSwing: 0,
+    previousScrollY: window.scrollY,
+    scrollRange: 1,
+    viewportHeight: window.innerHeight,
+    minY: 76,
+    maxY: 76,
+    frameId: 0,
+    settleTimer: 0
   };
 
-  const measureScrollTarget = () => {
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+  const isCompact = () => window.innerWidth < 600;
+  const isTablet = () => window.innerWidth >= 600 && window.innerWidth < 1024;
+
+  const updateMetrics = () => {
+    const compact = isCompact();
+    const tablet = isTablet();
+    const figureHeight = compact ? 69 : tablet ? 78 : 96;
+    state.viewportHeight = Math.max(1, window.innerHeight);
+    state.minY = compact ? 74 : tablet ? 84 : 96;
+    state.maxY = Math.max(state.minY, state.viewportHeight - figureHeight - (compact ? 8 : 12));
+    state.scrollRange = Math.max(1, document.documentElement.scrollHeight - state.viewportHeight);
+  };
+
+  const writeMotion = () => {
+    const handOffset = isCompact() ? 4 : 6;
+    const webStretch = clamp((state.currentY + handOffset) / state.viewportHeight, .025, 1.1);
+    companion.style.setProperty('--spider-y', `${state.currentY.toFixed(2)}px`);
+    companion.style.setProperty('--spider-tilt', `${state.currentTilt.toFixed(2)}deg`);
+    companion.style.setProperty('--spider-sway', `${state.currentSway.toFixed(2)}px`);
+    companion.style.setProperty('--spider-swing', `${state.currentSwing.toFixed(2)}deg`);
+    companion.style.setProperty('--spider-web-stretch', webStretch.toFixed(4));
+  };
+
+  const setTargetFromScroll = () => {
     const scrollY = window.scrollY;
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const minY = 112;
-    const maxY = Math.max(minY, window.innerHeight - 88);
-    targetY = minY + (scrollY / maxScroll) * (maxY - minY);
-    const direction = scrollY - previousScrollY;
-    targetTilt = direction > 0 ? 9 : direction < 0 ? -8 : 0;
-    previousScrollY = scrollY;
+    const progress = clamp(scrollY / state.scrollRange, 0, 1);
+    const direction = scrollY - state.previousScrollY;
+    state.targetY = state.minY + (state.maxY - state.minY) * progress;
+
+    if (direction) {
+      const force = clamp(Math.abs(direction) * .18, 2.5, 9.5);
+      const sign = direction > 0 ? 1 : -1;
+      state.targetTilt = sign * force;
+      state.targetSway = sign * Math.min(1.9, force * .22);
+      state.targetSwing = sign * Math.min(2.2, force * .24);
+    }
+
+    state.previousScrollY = scrollY;
   };
+
+  const needsFrame = () => (
+    Math.abs(state.targetY - state.currentY) > .05 ||
+    Math.abs(state.targetTilt - state.currentTilt) > .05 ||
+    Math.abs(state.targetSway - state.currentSway) > .03 ||
+    Math.abs(state.targetSwing - state.currentSwing) > .03
+  );
 
   const render = () => {
-    frameId = 0;
-    currentY += (targetY - currentY) * .16;
-    currentTilt += (targetTilt - currentTilt) * .18;
-    setMotion();
-
-    if (Math.abs(targetY - currentY) > .08 || Math.abs(targetTilt - currentTilt) > .08) {
-      frameId = window.requestAnimationFrame(render);
+    state.frameId = 0;
+    if (reducedMotionQuery.matches) {
+      state.currentY = state.targetY;
+      state.currentTilt = 0;
+      state.currentSway = 0;
+      state.currentSwing = 0;
+      writeMotion();
+      return;
     }
+
+    state.currentY += (state.targetY - state.currentY) * .16;
+    state.currentTilt += (state.targetTilt - state.currentTilt) * .2;
+    state.currentSway += (state.targetSway - state.currentSway) * .18;
+    state.currentSwing += (state.targetSwing - state.currentSwing) * .18;
+    writeMotion();
+
+    if (needsFrame()) state.frameId = window.requestAnimationFrame(render);
   };
 
   const requestRender = () => {
-    if (!frameId) frameId = window.requestAnimationFrame(render);
+    if (!state.frameId) state.frameId = window.requestAnimationFrame(render);
+  };
+
+  const settleMotion = () => {
+    window.clearTimeout(state.settleTimer);
+    state.settleTimer = window.setTimeout(() => {
+      state.targetTilt = 0;
+      state.targetSway = 0;
+      state.targetSwing = 0;
+      requestRender();
+    }, 140);
   };
 
   const onScroll = () => {
-    measureScrollTarget();
+    setTargetFromScroll();
     requestRender();
+    settleMotion();
   };
 
   const onResize = () => {
-    measureScrollTarget();
-    currentY = targetY;
-    currentTilt = 0;
-    setMotion();
+    updateMetrics();
+    setTargetFromScroll();
+    state.currentY = state.targetY;
+    state.currentTilt = 0;
+    state.currentSway = 0;
+    state.currentSwing = 0;
+    writeMotion();
   };
 
-  const setEnabled = () => {
-    enabled = desktopQuery.matches && !reducedMotionQuery.matches;
-    if (!enabled) {
-      if (frameId) window.cancelAnimationFrame(frameId);
-      frameId = 0;
-      currentY = 118;
-      targetY = 118;
-      currentTilt = 0;
-      targetTilt = 0;
-      setMotion();
-      return;
+  const onMotionPreferenceChange = () => {
+    if (reducedMotionQuery.matches && state.frameId) {
+      window.cancelAnimationFrame(state.frameId);
+      state.frameId = 0;
     }
-    previousScrollY = window.scrollY;
     onResize();
   };
 
-  window.addEventListener('scroll', () => {
-    if (enabled) onScroll();
-  }, { passive: true });
-  window.addEventListener('resize', () => {
-    if (enabled) onResize();
-  }, { passive: true });
-  desktopQuery.addEventListener?.('change', setEnabled);
-  reducedMotionQuery.addEventListener?.('change', setEnabled);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('load', onResize, { once: true });
+  window.addEventListener('pagehide', () => {
+    if (state.frameId) window.cancelAnimationFrame(state.frameId);
+    window.clearTimeout(state.settleTimer);
+  }, { once: true });
+  reducedMotionQuery.addEventListener?.('change', onMotionPreferenceChange);
 
-  setEnabled();
+  onResize();
 })();
