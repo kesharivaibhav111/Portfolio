@@ -309,3 +309,20 @@ async function initializeThreeScene() {
 }
 
 initializeThreeScene();
+ 
+// Login / Signup preview tab switcher
+document.querySelectorAll('.auth-tab-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.target;
+    const parentVisual = btn.closest('.login-visual');
+    if (!parentVisual) return;
+    parentVisual.querySelectorAll('.auth-tab-btn').forEach((b) => {
+      const active = b === btn;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', String(active));
+    });
+    parentVisual.querySelectorAll('.auth-screen-layer').forEach((layer) => {
+      layer.classList.toggle('active', layer.dataset.view === target);
+    });
+  });
+});
