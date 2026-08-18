@@ -326,3 +326,136 @@ document.querySelectorAll('.auth-tab-btn').forEach((btn) => {
     });
   });
 });
+
+// ─── Spider-Man Scroll Companion ───
+(function initSpidey() {
+  if (prefersReducedMotion.matches) return;
+  if (isCompact.matches) return;
+
+  const rig    = document.getElementById('spidey-rig');
+  const figure = document.getElementById('spidey-figure');
+  const wall   = document.getElementById('spidey-wall');
+  const webSvg = document.getElementById('spidey-web-svg');
+  const webLine = document.getElementById('spidey-web-line');
+  if (!rig || !figure || !wall || !webSvg || !webLine) return;
+
+  // Config
+  const FIGURE_HEIGHT   = 68;   // px — matches CSS
+  const VIEWPORT_HEIGHT = () => window.innerHeight;
+  const DESCENT_RATIO   = 0.55; // how far down in viewport Spidey hangs (55% from top)
+  const CLIMB_SPEED     = 0.18; // lerp factor for climbing up
+  const DESCEND_SPEED   = 0.12; // lerp factor for descending
+
+  let prevScrollY    = window.scrollY;
+  let mode           = 'descend'; // 'descend' | 'climb'
+  let figureY        = VIEWPORT_HEIGHT() * DESCENT_RATIO;  // current rendered Y
+  let targetY        = figureY;
+  let rafId          = null;
+  let modeTimeout    = null;
+  let directionBuffer = 0;  // frames in same direction before mode switch
+
+  // Scroll progress 0–1 across full document
+  function scrollProgress() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return max > 0 ? window.scrollY / max : 0;
+  }
+
+  // Map scroll position to Spidey Y in viewport (descent mode)
+  function descentTargetY() {
+    // Spidey tracks scroll: near top = high in viewport, near bottom = low
+    const vh = VIEWPORT_HEIGHT();
+    const p  = scrollProgress();
+    // Range: 8% vh to 80% vh
+    return vh * (0.08 + p * 0.72);
+  }
+
+  function updateWebLine(y) {
+    // Web goes from viewport top to figure top
+    const svgH = VIEWPORT_HEIGHT();
+    webSvg.setAttribute('viewBox', `0 0 40 ${svgH}`);
+    webLine.setAttribute('y2', Math.max(0, y));
+  }
+
+  function setMode(newMode) {
+    if (mode === newMode) return;
+    mode = newMode;
+
+    clearTimeout(modeTimeout);
+    modeTimeout = setTimeout(() => {
+      if (mode === 'climb') {
+        rig.classList.add('climb-mode');
+        wall.classList.add('is-visible');
+      } else {
+        rig.classList.remove('climb-mode');
+        wall.classList.remove('is-visible');
+      }
+    }, mode === 'climb' ? 80 : 200);
+  }
+
+  function tick() {
+    const curY = window.scrollY;
+    const delta = curY - prevScrollY;
+
+    // Determine direction (filter tiny jitter < 1.5px)
+    if (Math.abs(delta) > 1.5) {
+      if (delta > 0) {
+        directionBuffer = Math.min(directionBuffer + 1, 8);
+      } else {
+        directionBuffer = Math.max(directionBuffer - 1, -8);
+      }
+    }
+
+    if (directionBuffer >= 3 && mode !== 'descend') setMode('descend');
+    if (directionBuffer <= -3 && mode !== 'climb')   setMode('climb');
+
+    prevScrollY = curY;
+
+    const vh = VIEWPORT_HEIGHT();
+
+    if (mode === 'descend') {
+      targetY = descentTargetY();
+      // Lerp figure toward target
+      figureY += (targetY - figureY) * DESCEND_SPEED;
+
+      // Clamp within viewport
+      figureY = Math.max(0, Math.min(figureY, vh - FIGURE_HEIGHT));
+
+      figure.style.transform = `translateY(${figureY}px)`;
+      updateWebLine(figureY);
+
+      // Subtle sway tied to scroll velocity
+      const sway = Math.sin(curY * 0.03) * 3;
+      figure.style.transform = `translateY(${figureY}px) translateX(${sway}px)`;
+
+    } else {
+      // Climb mode: figure moves UP as scrollY decreases
+      targetY = descentTargetY();
+      figureY += (targetY - figureY) * CLIMB_SPEED;
+
+      figureY = Math.max(0, Math.min(figureY, vh - FIGURE_HEIGHT));
+      figure.style.transform = `translateY(${figureY}px)`;
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // Start loop
+  rafId = requestAnimationFrame(tick);
+
+  // Pause when tab hidden — save CPU
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+    } else {
+      rafId = requestAnimationFrame(tick);
+    }
+  });
+
+  // Hide if viewport becomes compact (e.g. device rotation)
+  if (typeof isCompact.addEventListener === 'function') {
+    isCompact.addEventListener('change', (e) => {
+      rig.style.display = e.matches ? 'none' : '';
+    });
+  }
+})();
+
