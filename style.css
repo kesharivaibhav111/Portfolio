@@ -1204,188 +1204,202 @@ body.cursor-ready .cursor-glow {
   text-transform: uppercase;
 }
 
+/* ─── VoiceNote Mobile Showcase ─── */
 .voicenote-visual {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(14px, 2.5vw, 24px);
+  min-height: 480px;
+  padding: 24px 16px 20px;
   background:
-    radial-gradient(circle at 82% 18%, rgba(91, 91, 219, .40), transparent 42%),
-    radial-gradient(circle at 18% 85%, rgba(135, 78, 255, .22), transparent 40%),
-    linear-gradient(135deg, #1a0630, #0e021a);
+    radial-gradient(circle at 50% 25%, rgba(91, 91, 219, .35), transparent 55%),
+    radial-gradient(circle at 85% 85%, rgba(135, 78, 255, .2), transparent 45%),
+    linear-gradient(145deg, #150628, #090212);
+  overflow: hidden;
 }
 
-/* Phone chrome frame — mirrors .auth-browser-frame */
-.phone-chrome-frame {
+.voicenote-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(180, 160, 255, .05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 160, 255, .05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+  pointer-events: none;
+}
+
+/* Floating top control tabs */
+.vn-ctrl-bar {
   position: relative;
+  z-index: 3;
+  margin-bottom: 16px;
+}
+
+.vn-ctrl-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  background: rgba(22, 10, 42, 0.85);
+  border: 1px solid rgba(200, 190, 255, 0.25);
+  border-radius: 99px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.vn-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1px solid transparent;
+  border-radius: 99px;
+  background: transparent;
+  color: rgba(220, 210, 255, 0.72);
+  font: 500 11px var(--mono);
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all .25s var(--ease);
+}
+
+.vn-tab-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.vn-tab-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.vn-tab-btn.active {
+  color: #ffffff;
+  background: #5b5bdb;
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 14px rgba(91, 91, 219, 0.5);
+}
+
+/* Floating feature pills on sides */
+.vn-float-pill {
+  position: absolute;
   z-index: 1;
-  width: 100%;
-  border: 1px solid rgba(200, 190, 255, .28);
-  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid rgba(200, 190, 255, 0.2);
+  border-radius: 99px;
+  background: rgba(20, 8, 38, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgba(230, 220, 255, 0.9);
+  font: 500 10px var(--mono);
+  letter-spacing: .04em;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  transition: transform .4s var(--ease);
+}
+
+.vn-float-left {
+  left: 20px;
+  top: 48%;
+}
+
+.vn-float-right {
+  right: 20px;
+  top: 55%;
+}
+
+.project-card:hover .vn-float-left {
+  transform: translateX(-4px) translateY(-2px);
+}
+
+.project-card:hover .vn-float-right {
+  transform: translateX(4px) translateY(-2px);
+}
+
+.pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5b5bdb;
+  box-shadow: 0 0 8px #5b5bdb;
+}
+
+.pill-dot.green {
+  background: #28c840;
+  box-shadow: 0 0 8px #28c840;
+}
+
+/* Smartphone Mockup Device */
+.vn-phone-device {
+  position: relative;
+  z-index: 2;
+  width: 196px;
+  max-width: 100%;
+  aspect-ratio: 472 / 1024;
+  border: 3.5px solid #2e1a47;
+  border-radius: 30px;
+  background: #08020e;
+  box-shadow: 
+    0 22px 50px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 40px rgba(91, 91, 219, 0.25);
   overflow: hidden;
-  background: #1a0e2e;
-  box-shadow: 0 20px 42px rgba(8, 2, 20, .55);
   transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .35s;
 }
 
-.project-card:hover .phone-chrome-frame {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 28px 52px rgba(8, 2, 20, .7);
-  border-color: rgba(200, 190, 255, .48);
+.project-card:hover .vn-phone-device {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(200, 190, 255, 0.45);
+  box-shadow: 
+    0 30px 65px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 0 50px rgba(91, 91, 219, 0.45);
 }
 
-/* Status bar — minimal mock */
-.phone-chrome-status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 12px 3px;
-  background: rgba(20, 10, 40, .95);
-  color: rgba(220, 210, 255, .85);
-}
-
-.phone-status-time {
-  font: 8px var(--mono);
-  font-weight: 600;
-  letter-spacing: .04em;
-}
-
-.phone-status-icons {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.phone-battery {
-  width: 16px;
-  height: 8px;
-  border: 1px solid rgba(220, 210, 255, .6);
-  border-radius: 2px;
-  position: relative;
-  padding: 1px;
-}
-
-.phone-battery::after {
-  content: '';
+.vn-phone-notch {
   position: absolute;
-  right: -3px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2px;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
   height: 4px;
-  background: rgba(220, 210, 255, .5);
-  border-radius: 0 1px 1px 0;
-}
-
-.phone-battery span {
-  display: block;
-  width: 78%;
-  height: 100%;
-  background: rgba(160, 255, 160, .8);
-  border-radius: 1px;
-}
-
-/* App top bar — mirrors .auth-browser-bar */
-.phone-chrome-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(200, 190, 255, .14);
-  background: rgba(28, 14, 52, .95);
-}
-
-.phone-app-icon {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  background: #5b5bdb;
-  flex-shrink: 0;
-  box-shadow: 0 0 8px rgba(91, 91, 219, .5);
-}
-
-.phone-app-name {
-  color: rgba(220, 210, 255, .9);
-  font: 600 10px var(--mono);
-  letter-spacing: .08em;
-  flex: 1;
-}
-
-/* Tab buttons — mirrors .auth-browser-tabs */
-.phone-chrome-tabs {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.phone-chrome-tab {
-  padding: 3px 7px;
-  border: 1px solid rgba(200, 190, 255, .18);
-  border-radius: 3px;
-  background: rgba(255, 255, 255, .04);
-  color: rgba(210, 200, 255, .7);
-  font: 9px var(--mono);
-  line-height: 1.2;
-  cursor: pointer;
-  transition: all .2s var(--ease);
-}
-
-.phone-chrome-tab:hover,
-.phone-chrome-tab.active {
-  color: #e8e0ff;
-  background: #5b5bdb;
-  border-color: rgba(200, 190, 255, .5);
-}
-
-/* APK badge — mirrors .auth-live-badge */
-.phone-apk-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 7px;
-  border: 1px solid rgba(91, 91, 219, .4);
   border-radius: 99px;
-  background: rgba(20, 10, 48, .7);
-  color: #a0a0ff;
-  font: 8px var(--mono);
-  font-weight: 700;
-  letter-spacing: .08em;
-  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.25);
+  z-index: 5;
 }
 
-.phone-apk-badge .badge-dot {
-  background: #a0a0ff;
-  box-shadow: 0 0 5px #a0a0ff;
-}
-
-/* Screen stage — mirrors .auth-browser-stage */
-.phone-chrome-stage {
+.vn-phone-screen {
   position: relative;
   width: 100%;
-  aspect-ratio: 9 / 16;
-  background: #f3f3f8;
+  height: 100%;
+  border-radius: 26px;
   overflow: hidden;
+  background: #f7f7fb;
 }
 
-/* Screen layers — mirrors .auth-screen-layer */
-.phone-chrome-layer {
+.vn-screen-layer {
   position: absolute;
   inset: 0;
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.985);
-  transition: opacity .35s var(--ease), transform .45s var(--ease);
+  transform: scale(0.98);
+  transition: opacity .35s var(--ease), transform .4s var(--ease);
 }
 
-.phone-chrome-layer.active {
+.vn-screen-layer.active {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
 }
 
-.phone-chrome-layer img {
+.vn-screen-layer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1396,10 +1410,17 @@ body.cursor-ready .cursor-glow {
 /* Responsive */
 @media (max-width: 720px) {
   .voicenote-visual {
-    min-height: 280px;
-    padding: 12px;
+    min-height: 420px;
+    padding: 18px 12px 16px;
+  }
+  .vn-phone-device {
+    width: 175px;
+  }
+  .vn-float-pill {
+    display: none;
   }
 }
+
 
 
 
