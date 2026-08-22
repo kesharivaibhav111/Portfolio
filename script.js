@@ -326,3 +326,21 @@ document.querySelectorAll('.auth-tab-btn').forEach((btn) => {
     });
   });
 });
+
+// VoiceNote preview tab switcher
+document.querySelectorAll('.phone-tab-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.target;
+    const parentVisual = btn.closest('.voicenote-visual');
+    if (!parentVisual) return;
+    parentVisual.querySelectorAll('.phone-tab-btn').forEach((b) => {
+      const active = b === btn;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', String(active));
+    });
+    parentVisual.querySelectorAll('.phone-screen-layer').forEach((layer) => {
+      layer.classList.toggle('active', layer.dataset.view === target);
+    });
+  });
+});
+
