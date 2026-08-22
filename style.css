@@ -1205,200 +1205,203 @@ body.cursor-ready .cursor-glow {
 }
 
 .voicenote-visual {
-  min-height: 430px;
-  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(14px, 2.5vw, 24px);
   background:
-    radial-gradient(circle at 20% 75%, rgba(91, 91, 219, .22), transparent 32%),
-    radial-gradient(circle at 85% 15%, rgba(135, 78, 255, .28), transparent 38%),
-    linear-gradient(135deg, #1a0630, #0c0318 72%);
+    radial-gradient(circle at 82% 18%, rgba(91, 91, 219, .40), transparent 42%),
+    radial-gradient(circle at 18% 85%, rgba(135, 78, 255, .22), transparent 40%),
+    linear-gradient(135deg, #1a0630, #0e021a);
 }
 
-.voicenote-visual::before {
+/* Phone chrome frame — mirrors .auth-browser-frame */
+.phone-chrome-frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border: 1px solid rgba(200, 190, 255, .28);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1a0e2e;
+  box-shadow: 0 20px 42px rgba(8, 2, 20, .55);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .35s;
+}
+
+.project-card:hover .phone-chrome-frame {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 28px 52px rgba(8, 2, 20, .7);
+  border-color: rgba(200, 190, 255, .48);
+}
+
+/* Status bar — minimal mock */
+.phone-chrome-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 12px 3px;
+  background: rgba(20, 10, 40, .95);
+  color: rgba(220, 210, 255, .85);
+}
+
+.phone-status-time {
+  font: 8px var(--mono);
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+.phone-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.phone-battery {
+  width: 16px;
+  height: 8px;
+  border: 1px solid rgba(220, 210, 255, .6);
+  border-radius: 2px;
+  position: relative;
+  padding: 1px;
+}
+
+.phone-battery::after {
   content: '';
   position: absolute;
-  z-index: 0;
-  inset: 0;
-  background-image: linear-gradient(rgba(180, 160, 255, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(180, 160, 255, .06) 1px, transparent 1px);
-  background-size: 26px 26px;
-  mask-image: linear-gradient(135deg, black, transparent 78%);
-  pointer-events: none;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 4px;
+  background: rgba(220, 210, 255, .5);
+  border-radius: 0 1px 1px 0;
 }
 
-/* App header badge */
-.vn-header {
-  position: absolute;
-  z-index: 3;
-  top: 22px;
-  left: 7%;
+.phone-battery span {
+  display: block;
+  width: 78%;
+  height: 100%;
+  background: rgba(160, 255, 160, .8);
+  border-radius: 1px;
+}
+
+/* App top bar — mirrors .auth-browser-bar */
+.phone-chrome-bar {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: rgba(220, 210, 255, .9);
-  font: 11px var(--mono);
-  font-weight: 600;
-  letter-spacing: .12em;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(200, 190, 255, .14);
+  background: rgba(28, 14, 52, .95);
 }
 
-.vn-app-icon {
+.phone-app-icon {
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
   background: #5b5bdb;
-  box-shadow: 0 0 12px rgba(91, 91, 219, .5);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(91, 91, 219, .5);
 }
 
-.vn-live-badge {
+.phone-app-name {
+  color: rgba(220, 210, 255, .9);
+  font: 600 10px var(--mono);
+  letter-spacing: .08em;
+  flex: 1;
+}
+
+/* Tab buttons — mirrors .auth-browser-tabs */
+.phone-chrome-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.phone-chrome-tab {
+  padding: 3px 7px;
+  border: 1px solid rgba(200, 190, 255, .18);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .04);
+  color: rgba(210, 200, 255, .7);
+  font: 9px var(--mono);
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all .2s var(--ease);
+}
+
+.phone-chrome-tab:hover,
+.phone-chrome-tab.active {
+  color: #e8e0ff;
+  background: #5b5bdb;
+  border-color: rgba(200, 190, 255, .5);
+}
+
+/* APK badge — mirrors .auth-live-badge */
+.phone-apk-badge {
   display: flex;
   align-items: center;
   gap: 5px;
   padding: 3px 7px;
-  border: 1px solid rgba(91, 91, 219, .45);
+  border: 1px solid rgba(91, 91, 219, .4);
   border-radius: 99px;
-  background: rgba(20, 10, 48, .65);
+  background: rgba(20, 10, 48, .7);
   color: #a0a0ff;
   font: 8px var(--mono);
   font-weight: 700;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
+  flex-shrink: 0;
 }
 
-/* Floating phone screenshots */
-.vn-shot {
-  position: absolute;
-  z-index: 1;
-  margin: 0;
+.phone-apk-badge .badge-dot {
+  background: #a0a0ff;
+  box-shadow: 0 0 5px #a0a0ff;
+}
+
+/* Screen stage — mirrors .auth-browser-stage */
+.phone-chrome-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #f3f3f8;
   overflow: hidden;
-  border: 1px solid rgba(200, 190, 255, .45);
-  border-radius: 16px;
-  background: #f7f7fb;
-  box-shadow: 0 24px 38px rgba(10, 4, 30, .55);
 }
 
-.vn-shot img {
-  display: block;
+/* Screen layers — mirrors .auth-screen-layer */
+.phone-chrome-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.985);
+  transition: opacity .35s var(--ease), transform .45s var(--ease);
+}
+
+.phone-chrome-layer.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.phone-chrome-layer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  transition: transform .65s var(--ease);
+  display: block;
 }
 
-.vn-shot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 60%, rgba(10, 4, 30, .65));
-  pointer-events: none;
-}
-
-.vn-shot figcaption {
-  position: absolute;
-  z-index: 1;
-  right: 10px;
-  bottom: 9px;
-  color: #e8e0ff;
-  font: 9px var(--mono);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-/* Back screenshot — language picker */
-.vn-shot-back {
-  top: 55px;
-  right: 7%;
-  width: 46%;
-  aspect-ratio: .465;
-  opacity: .82;
-  filter: blur(0.5px);
-  transform: rotate(3deg) translateX(8px);
-}
-
-/* Front screenshot — main app */
-.vn-shot-front {
-  bottom: 28px;
-  left: 7%;
-  width: 54%;
-  aspect-ratio: .465;
-}
-
-.project-card:hover .vn-shot img {
-  transform: scale(1.035);
-}
-
-.project-card:hover .vn-shot-back {
-  transform: rotate(3deg) translateX(12px) translateY(-4px);
-  opacity: .9;
-  filter: none;
-}
-
-/* Mic pulse glow decoration */
-.vn-mic-glow {
-  position: absolute;
-  z-index: 0;
-  bottom: 18%;
-  right: 38%;
-  width: 64px;
-  height: 64px;
-  display: grid;
-  place-items: center;
-}
-
-.vn-mic-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(91, 91, 219, .35);
-  animation: vn-pulse 2.6s ease-out infinite;
-}
-
-.vn-mic-ring-1 {
-  width: 64px;
-  height: 64px;
-}
-
-.vn-mic-ring-2 {
-  width: 48px;
-  height: 48px;
-  animation-delay: .6s;
-}
-
-@keyframes vn-pulse {
-  0%   { opacity: .7; transform: scale(.8); }
-  80%  { opacity: 0; transform: scale(1.5); }
-  100% { opacity: 0; transform: scale(1.5); }
-}
-
-.vn-mic-core {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #5b5bdb;
-  box-shadow: 0 0 18px rgba(91, 91, 219, .55);
-}
-
-/* Mobile responsive */
+/* Responsive */
 @media (max-width: 720px) {
   .voicenote-visual {
-    min-height: 300px;
-  }
-  .vn-shot-front {
-    width: 52%;
-    bottom: 22px;
-  }
-  .vn-shot-back {
-    width: 43%;
-    top: 48px;
+    min-height: 280px;
+    padding: 12px;
   }
 }
 
-/* Reduced motion: kill pulse */
-@media (prefers-reduced-motion: reduce) {
-  .vn-mic-ring { animation: none; }
-  .vn-shot img { transition: none; }
-  .project-card:hover .vn-shot-back { transform: rotate(3deg) translateX(8px); }
-}
+
 
 .project-copy {
   transform: translateZ(22px);
