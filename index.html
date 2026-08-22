@@ -347,51 +347,43 @@
           <article class="project-card project-card-reverse reveal" data-tilt>
             <div class="project-visual voicenote-visual" role="group"
               aria-label="VoiceNote multilingual speech-to-text mobile app preview">
-              <div class="vn-browser-frame">
-                <div class="vn-browser-bar">
-                  <div class="vn-browser-dots" aria-hidden="true">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div class="vn-browser-url">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                      <circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.1" />
-                    </svg>
-                    <span>voice-note.app</span>
-                  </div>
-                  <div class="vn-browser-tabs" role="tablist" aria-label="VoiceNote screen preview">
-                    <button type="button" class="vn-tab-btn active" role="tab" aria-selected="true" data-target="vn-en">
-                      <span class="vn-tab-icon">🎙️</span> English
-                    </button>
-                    <button type="button" class="vn-tab-btn" role="tab" aria-selected="false" data-target="vn-hi">
-                      <span class="vn-tab-icon">🇮🇳</span> हिंदी
-                    </button>
-                    <button type="button" class="vn-tab-btn" role="tab" aria-selected="false" data-target="vn-lang">
-                      <span class="vn-tab-icon">🌐</span> Languages
-                    </button>
-                  </div>
-                  <div class="vn-live-badge" aria-hidden="true">
-                    <span class="vn-live-dot"></span>
-                    STT
-                  </div>
+              <div class="vn-ctrl-bar">
+                <div class="vn-ctrl-tabs" role="tablist" aria-label="VoiceNote screen preview">
+                  <button type="button" class="vn-tab-btn active" role="tab" aria-selected="true" data-target="vn-en">
+                    <span class="vn-tab-icon">🎙️</span> English
+                  </button>
+                  <button type="button" class="vn-tab-btn" role="tab" aria-selected="false" data-target="vn-hi">
+                    <span class="vn-tab-icon">🇮🇳</span> हिंदी
+                  </button>
+                  <button type="button" class="vn-tab-btn" role="tab" aria-selected="false" data-target="vn-lang">
+                    <span class="vn-tab-icon">🌐</span> Languages
+                  </button>
                 </div>
-                <div class="vn-browser-stage">
-                  <div class="vn-browser-sheen" aria-hidden="true"></div>
-                  <div class="vn-phone-device">
-                    <div class="vn-phone-notch" aria-hidden="true"></div>
-                    <div class="vn-phone-screen">
-                      <div class="vn-screen-layer active" data-view="vn-en">
-                        <img src="assets/images/voicenote-en.jpg" loading="lazy" decoding="async"
-                          alt="VoiceNote English recording screen showing Ready status and speech prompt" />
-                      </div>
-                      <div class="vn-screen-layer" data-view="vn-hi">
-                        <img src="assets/images/voicenote-hi.jpg" loading="lazy" decoding="async"
-                          alt="VoiceNote Hindi recording screen showing Devnagari interface" />
-                      </div>
-                      <div class="vn-screen-layer" data-view="vn-lang">
-                        <img src="assets/images/voicenote-lang.jpg" loading="lazy" decoding="async"
-                          alt="VoiceNote language selection bottom sheet with regional Indian languages" />
-                      </div>
-                    </div>
+              </div>
+
+              <div class="vn-float-pill vn-float-left" aria-hidden="true">
+                <span class="pill-dot"></span>
+                <span>Realtime STT</span>
+              </div>
+              <div class="vn-float-pill vn-float-right" aria-hidden="true">
+                <span class="pill-dot green"></span>
+                <span>Varanasi Ready</span>
+              </div>
+
+              <div class="vn-phone-device">
+                <div class="vn-phone-notch" aria-hidden="true"></div>
+                <div class="vn-phone-screen">
+                  <div class="vn-screen-layer active" data-view="vn-en">
+                    <img src="assets/images/voicenote-en.jpg" loading="lazy" decoding="async"
+                      alt="VoiceNote English recording screen showing Ready status and speech prompt" />
+                  </div>
+                  <div class="vn-screen-layer" data-view="vn-hi">
+                    <img src="assets/images/voicenote-hi.jpg" loading="lazy" decoding="async"
+                      alt="VoiceNote Hindi recording screen showing Devnagari interface" />
+                  </div>
+                  <div class="vn-screen-layer" data-view="vn-lang">
+                    <img src="assets/images/voicenote-lang.jpg" loading="lazy" decoding="async"
+                      alt="VoiceNote language selection bottom sheet with regional Indian languages" />
                   </div>
                 </div>
               </div>
