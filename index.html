@@ -347,31 +347,40 @@
           <article class="project-card reveal" data-tilt>
             <div class="project-visual voicenote-visual" role="group"
               aria-label="VoiceNote multilingual speech-to-text mobile app preview">
-              <div class="mobile-phone-frame">
-                <div class="mobile-notch-bar">
-                  <div class="mobile-notch-pill" aria-hidden="true"></div>
+              <!-- App header badge -->
+              <div class="vn-header">
+                <div class="vn-app-icon" aria-hidden="true">
+                  <svg viewBox="0 0 28 28" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="28" height="28" rx="7" fill="#5b5bdb"/>
+                    <rect x="11.5" y="6" width="5" height="10" rx="2.5" fill="white"/>
+                    <path d="M7 14.5a7 7 0 0 0 14 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                    <line x1="14" y1="21.5" x2="14" y2="24" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
                 </div>
-                <div class="phone-tab-bar" role="tablist" aria-label="VoiceNote screen tabs">
-                  <button type="button" class="phone-tab-btn active" role="tab" aria-selected="true" data-target="en">English</button>
-                  <button type="button" class="phone-tab-btn" role="tab" aria-selected="false" data-target="hi">Hindi</button>
-                  <button type="button" class="phone-tab-btn" role="tab" aria-selected="false" data-target="lang">Languages</button>
-                </div>
-                <div class="phone-screen-stage">
-                  <div class="phone-screen-layer active" data-view="en">
-                    <img src="assets/images/voicenote-en.jpg" loading="lazy" decoding="async"
-                      alt="VoiceNote English recording screen showing Ready status and speech prompt" />
-                    <span class="auth-screen-tag">English UI</span>
-                  </div>
-                  <div class="phone-screen-layer" data-view="hi">
-                    <img src="assets/images/voicenote-hi.jpg" loading="lazy" decoding="async"
-                      alt="VoiceNote Hindi recording screen showing Devnagari interface" />
-                    <span class="auth-screen-tag">Hindi UI</span>
-                  </div>
-                  <div class="phone-screen-layer" data-view="lang">
-                    <img src="assets/images/voicenote-lang.jpg" loading="lazy" decoding="async"
-                      alt="VoiceNote language selection bottom sheet with regional Indian languages" />
-                    <span class="auth-screen-tag">Languages</span>
-                  </div>
+                <span>VoiceNote</span>
+                <div class="vn-live-badge"><span class="badge-dot" aria-hidden="true"></span>APK</div>
+              </div>
+              <!-- Floating phone screenshots -->
+              <figure class="vn-shot vn-shot-back">
+                <img src="assets/images/voicenote-lang.jpg" loading="lazy" decoding="async"
+                  alt="VoiceNote language picker showing Hindi, English IN and regional Indian languages" />
+                <figcaption>Languages</figcaption>
+              </figure>
+              <figure class="vn-shot vn-shot-front">
+                <img src="assets/images/voicenote-en.jpg" loading="lazy" decoding="async"
+                  alt="VoiceNote English recording screen with microphone button and Ready status" />
+                <figcaption>English UI</figcaption>
+              </figure>
+              <!-- Mic pulse decoration -->
+              <div class="vn-mic-glow" aria-hidden="true">
+                <div class="vn-mic-ring vn-mic-ring-1"></div>
+                <div class="vn-mic-ring vn-mic-ring-2"></div>
+                <div class="vn-mic-core">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="9" y="2" width="6" height="12" rx="3" fill="white"/>
+                    <path d="M5 11a7 7 0 0 0 14 0" stroke="white" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                    <line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
                 </div>
               </div>
             </div>
